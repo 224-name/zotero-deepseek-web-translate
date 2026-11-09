@@ -4,6 +4,7 @@
 > 不用 API Key，不花一分钱，靠的是让你浏览器里那个已经登录的 chat.deepseek.com 替你打工。
 
 <p>
+  <a href="https://github.com/224-name/zotero-deepseek-web-translate/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/224-name/zotero-deepseek-web-translate?label=download&color=2ea44f"></a>
   <img alt="Zotero" src="https://img.shields.io/badge/Zotero-7.0%20–%2010.x-CC2936?logo=zotero&logoColor=white">
   <img alt="Node" src="https://img.shields.io/badge/Node.js-%E2%89%A518-339933?logo=node.js&logoColor=white">
   <img alt="Tampermonkey" src="https://img.shields.io/badge/Tampermonkey-required-000000?logo=tampermonkey&logoColor=white">
@@ -155,6 +156,8 @@ Zotero → **工具 → 插件** → 齿轮 → **Install Add-on From File…** 
 ```
 dist/deepseek-web-translate-0.2.8.xpi
 ```
+
+> 不想 clone 整个仓库的话，直接到 [**Releases**](https://github.com/224-name/zotero-deepseek-web-translate/releases/latest) 下载这个 xpi 就行。
 
 装完立即生效；菜单没出现就重启一次 Zotero。
 
