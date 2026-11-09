@@ -1,0 +1,16 @@
+# 依赖
+node_modules/
+
+# 测试产物（每次跑测试都会重新生成）
+dist/test/
+
+# 日志与临时文件
+*.log
+*.tmp
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

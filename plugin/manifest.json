@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "DeepSeek 网页翻译",
+  "version": "0.2.8",
+  "description": "用免费的 DeepSeek 网页版（或任意 OpenAI 兼容接口）翻译 PDF 全文与划词文本，生成双语对照文档。",
+  "author": "local",
+  "icons": {
+    "48": "content/icon.svg",
+    "96": "content/icon.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "zotero-deepseek-web-translate@local",
+      "update_url": "https://example.com/zotero-deepseek-web-translate/update.json",
+      "strict_min_version": "7.0",
+      "strict_max_version": "10.9.9"
+    }
+  }
+}

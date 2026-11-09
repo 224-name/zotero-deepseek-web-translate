@@ -1,0 +1,10 @@
+* text=auto
+
+# Windows 批处理必须是 CRLF，否则 cmd.exe 会把行切碎
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# 二进制文件不要做换行转换
+*.xpi binary
+*.png binary
+*.docx binary

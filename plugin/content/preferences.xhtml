@@ -1,0 +1,160 @@
+<vbox id="zotero-prefpane-deepseekweb" xmlns:html="http://www.w3.org/1999/xhtml">
+	<html:h2 style="margin:0 0 2px">DeepSeek 网页翻译</html:h2>
+	<description style="margin-bottom:14px">
+		用免费方案（浏览器里已登录的 DeepSeek 网页版）或任意 OpenAI 兼容接口，翻译 PDF 全文和划词文本。
+	</description>
+
+	<!-- ============ 1. 翻译引擎 ============ -->
+	<groupbox>
+		<label><html:h3 style="margin:0 0 6px">1. 翻译引擎</html:h3></label>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">使用方式</label>
+			<menulist id="dswt-pref-provider" flex="1" preference="extensions.zotero.deepseekweb.provider">
+				<menupopup>
+					<menuitem label="DeepSeek 网页版（免费，需配合本地中转服务）" value="web"/>
+					<menuitem label="API / OpenAI 兼容（DeepSeek API、Ollama、其他）" value="openai"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">中转服务地址</label>
+			<html:input id="dswt-pref-bridge" type="text" spellcheck="false"
+				preference="extensions.zotero.deepseekweb.bridgeUrl"
+				style="flex:1 1 auto;min-width:240px"/>
+		</hbox>
+
+		<description style="margin:4px 0 0">
+			网页版模式是免费的，但需要两步：① 本机运行 bridge/start-bridge.cmd 启动中转服务；② 浏览器里装好油猴脚本并打开 chat.deepseek.com。
+		</description>
+		<hbox style="margin:6px 0 0">
+			<button label="测试中转服务连接" oncommand="Zotero.DeepSeekWebTranslate &amp;&amp; Zotero.DeepSeekWebTranslate.testConnection()"/>
+		</hbox>
+	</groupbox>
+
+	<!-- ============ 2. API 模式 ============ -->
+	<groupbox>
+		<label><html:h3 style="margin:0 0 6px">2. API 模式（可选，稳定但不免费）</html:h3></label>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">API 地址</label>
+			<html:input type="text" spellcheck="false"
+				preference="extensions.zotero.deepseekweb.apiBase"
+				style="flex:1 1 auto;min-width:240px"
+				placeholder="https://api.deepseek.com/v1"/>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">API Key</label>
+			<html:input type="password" spellcheck="false"
+				preference="extensions.zotero.deepseekweb.apiKey"
+				style="flex:1 1 auto;min-width:240px"
+				placeholder="sk-...（本机 Ollama 可留空）"/>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">模型</label>
+			<html:input type="text" spellcheck="false"
+				preference="extensions.zotero.deepseekweb.apiModel"
+				style="flex:1 1 auto;min-width:240px"
+				placeholder="deepseek-chat / qwen2.5 / glm-4-flash"/>
+		</hbox>
+
+		<description style="margin:4px 0 0">
+			任何兼容 /chat/completions 的服务都能用。想把 API 地址指向本机 Ollama：http://127.0.0.1:11434/v1 ，模型填 qwen2.5:7b 之类。
+		</description>
+	</groupbox>
+
+	<!-- ============ 3. 翻译选项 ============ -->
+	<groupbox>
+		<label><html:h3 style="margin:0 0 6px">3. 翻译选项</html:h3></label>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">目标语言</label>
+			<html:input type="text" spellcheck="false"
+				preference="extensions.zotero.deepseekweb.targetLang"
+				style="width:200px"
+				placeholder="简体中文"/>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">译文风格</label>
+			<menulist flex="1" preference="extensions.zotero.deepseekweb.promptStyle">
+				<menupopup>
+					<menuitem label="学术书面语（推荐）" value="academic"/>
+					<menuitem label="通顺自然（适度意译）" value="fluent"/>
+					<menuitem label="直译（贴近原文语序）" value="literal"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">每段字符数</label>
+			<html:input type="number" min="300" max="4000" step="100"
+				preference="extensions.zotero.deepseekweb.chunkSize"
+				style="width:100px"/>
+			<description style="margin-left:8px">越大越快，但网页版容易截断，建议 800–1500。</description>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">单段超时（秒）</label>
+			<html:input type="number" min="30" max="900" step="10"
+				preference="extensions.zotero.deepseekweb.timeoutSec"
+				style="width:100px"/>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">最大段数上限</label>
+			<html:input type="number" min="10" max="2000" step="10"
+				preference="extensions.zotero.deepseekweb.maxChunks"
+				style="width:100px"/>
+			<description style="margin-left:8px">超长文献会被截断，避免一次跑几千段。</description>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">划词翻译</label>
+			<checkbox native="true"
+				label="选中即自动翻译（单个英文单词给出多个义项和词性）"
+				preference="extensions.zotero.deepseekweb.selectionAuto"/>
+		</hbox>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">划词按钮文字</label>
+			<html:input type="text"
+				preference="extensions.zotero.deepseekweb.selectionLabel"
+				style="width:70px"/>
+			<checkbox native="true" style="margin-left:14px"
+				label="翻译后自动复制译文"
+				preference="extensions.zotero.deepseekweb.selectionAutoCopy"/>
+		</hbox>
+
+		<description style="margin:2px 0 0">
+			关掉「选中即自动翻译」后，选词弹窗里只显示一个按钮，点它才翻译；超过 600 字符的选区也不会自动翻译，避免误选整页就发出去。
+		</description>
+	</groupbox>
+
+	<!-- ============ 4. 输出 ============ -->
+	<groupbox>
+		<label><html:h3 style="margin:0 0 6px">4. 全文翻译的输出</html:h3></label>
+
+		<hbox align="center" style="margin:2px 0">
+			<label flex="0" style="min-width:130px">文档格式</label>
+			<menulist flex="1" preference="extensions.zotero.deepseekweb.outputFormat">
+				<menupopup>
+					<menuitem label="Word 文档 .docx（推荐，可再导出 PDF）" value="docx"/>
+					<menuitem label="网页 .html（可直接 Ctrl+P 打印成 PDF）" value="html"/>
+					<menuitem label="两种都生成" value="both"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+
+		<description style="margin:6px 0 0">
+			生成的文档会作为子附件挂在原条目下面，文件名形如「DeepSeek双语对照-论文标题」。只翻译文字层，公式/图表位置不会重排；扫描版 PDF 需要先 OCR。
+		</description>
+	</groupbox>
+
+	<description style="margin-top:12px;color:#888">
+		提示：网页版方案通过你本机浏览器里已登录的 DeepSeek 会话完成翻译，数据不经过第三方服务器，但属于自动化调用网页界面，可能受 DeepSeek 使用条款与频率限制约束。重要文献建议改用 API 或本地模型。
+	</description>
+</vbox>
